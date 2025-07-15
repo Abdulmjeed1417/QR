@@ -1,0 +1,50 @@
+body {
+    padding-top: 2rem;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.card {
+    margin-bottom: 1rem;
+}
+
+#qrcode-container {
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 0.25rem;
+}
+
+#qrcode-container img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Dark Mode */
+body.dark-mode {
+    background-color: #212529;
+    color: #f8f9fa;
+}
+
+.dark-mode .card {
+    background-color: #343a40;
+    color: #f8f9fa;
+}
+
+.dark-mode .form-control {
+    background-color: #495057;
+    color: #f8f9fa;
+    border-color: #6c757d;
+}
+
+.dark-mode .form-select {
+    background-color: #495057;
+    color: #f8f9fa;
+    border-color: #6c757d;
+}
+
+.dark-mode #qrcode-container {
+    background-color: #495057;
+}
+
+.dark-mode .form-check-label {
+    color: #f8f9fa;
+}
