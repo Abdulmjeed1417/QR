@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const textInput = document.getElementById('text-input');
+    const fileInput = document.getElementById('file-input');
+    const emailInput = document.getElementById('email-input');
     const sizeSelect = document.getElementById('size-select');
     const correctionSelect = document.getElementById('correction-select');
     const fgColorPicker = document.getElementById('fg-color-picker');
@@ -13,12 +15,30 @@ document.addEventListener('DOMContentLoaded', () => {
     let qrcode = null;
 
     const generateQRCode = () => {
-        const text = textInput.value;
-        if (!text) {
-            alert('Please enter text or a URL.');
+        let data = textInput.value;
+        const file = fileInput.files[0];
+        const email = emailInput.value;
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                data = e.target.result;
+                generate(data);
+            };
+            reader.readAsDataURL(file);
             return;
+        } else if (email) {
+            data = `mailto:${email}`;
         }
 
+        if (!data) {
+            alert('Please enter text, a URL, an email, or select a file.');
+            return;
+        }
+        generate(data);
+    };
+
+    const generate = (data) => {
         const size = parseInt(sizeSelect.value);
         const correctionLevel = correctionSelect.value;
         const fgColor = fgColorPicker.value;
@@ -26,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         qrcodeContainer.innerHTML = '';
         qrcode = new QRCode(qrcodeContainer, {
-            text: text,
+            text: data,
             width: size,
             height: size,
             colorDark: fgColor,
@@ -37,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     generateBtn.addEventListener('click', generateQRCode);
 
-    [textInput, sizeSelect, correctionSelect, fgColorPicker, bgColorPicker].forEach(input => {
+    [textInput, fileInput, emailInput, sizeSelect, correctionSelect, fgColorPicker, bgColorPicker].forEach(input => {
         input.addEventListener('input', generateQRCode);
     });
 
