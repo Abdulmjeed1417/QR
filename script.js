@@ -20,12 +20,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const email = emailInput.value;
 
         if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                data = e.target.result;
-                generate(data);
-            };
-            reader.readAsDataURL(file);
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('https://file.io/?expires=1d', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    generate(result.link);
+                } else {
+                    alert('Failed to upload file.');
+                }
+            })
+            .catch(error => {
+                console.error('Error uploading file:', error);
+                alert('Failed to upload file.');
+            });
             return;
         } else if (email) {
             data = `mailto:${email}`;
